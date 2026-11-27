@@ -369,22 +369,15 @@ ENDOFPLUGININFO
 ###########
 add_zinit_plugin_zsh_autosuggestions() {
     sed -i 's@^.*/zsh-autosuggestions@#&@g' "${HOME}/.zshrc"
-    #zinit ice pick"zsh-autosuggestions.zsh"
     cat >>${HOME}/.zshrc <<-'EOF'
-zinit ice wait lucid pick"zsh-autosuggestions.zsh" atload'_zsh_autosuggest_start' && zinit light _local/zsh-autosuggestions #自动建议插件 It suggests commands as you type based on history and completions.
+zinit ice wait lucid pick"zsh-autosuggestions.plugin.zsh" atload'_zsh_autosuggest_start' && zinit light _local/zsh-autosuggestions #自动建议插件 It suggests commands as you type based on history and completions.
 EOF
 }
 ##################
-git_clone_zsh_autosuggestions() {
-    if [ ! -d "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}/.git" ]; then
-        cat <<-ENDOFPLUGININFO
-    正在克隆自动建议插件${BOLD}${BLUE}zsh-autosuggestions${RESET}${RESET}...
-    ${YELLOW}github.com/zsh-users/zsh-autosuggestions${RESET}
-    ${GREEN}It suggests commands as you type based on history and completions.${RESET}
-ENDOFPLUGININFO
-        #sed -i '/zsh-autosuggestions.zsh/d' "${HOME}/.zshrc"
-        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}
-        chmod 755 -R "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}"
+configure_zsh_autosuggestions() {
+    if [ ! -e "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}/zsh-autosuggestions.plugin.zsh" ]; then
+        rm -rfv "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}" 2>/dev/null
+        ln -sv "${OMZ_DIR}/plugins/zsh-autosuggestions" "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}"
     fi
     if ! grep -Eq '^[^#]*zinit.*/zsh-autosuggestions' "${HOME}/.zshrc"; then
         add_zinit_plugin_zsh_autosuggestions
@@ -482,7 +475,7 @@ onekey_configure_tmoe_zsh() {
     #################
     configure_zinit_plugin_fzf_tab
     git_clone_fast_syntax_highlighting
-    git_clone_zsh_autosuggestions
+    configure_zsh_autosuggestions
     #######################
     if [ "${LINUX_DISTRO}" != "Android" ] && [ ${HOME} != "/root" ]; then
         sudo -E chown -Rv ${CURRENT_USER_NAME}:${CURRENT_USER_GROUP} ${HOME}/.zinit ${HOME}/.zsh_history ${HOME}/.z ${TMOE_ZSH_DIR}

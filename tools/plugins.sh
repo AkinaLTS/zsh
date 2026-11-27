@@ -1679,7 +1679,7 @@ tmoe_zsh_plugin_menu_07() {
         ;;
     03)
         TMOE_ZSH_GREP_NAME='zsh-autosuggestions'
-        ZINIT_SPECIAL_LOADING_CONTENT='zinit ice wait lucid pick"zsh-autosuggestions.zsh" atload'_zsh_autosuggest_start' && zinit light _local/zsh-autosuggestions #自动建议插件 It suggests commands as you type based on history and completions.'
+        ZINIT_SPECIAL_LOADING_CONTENT='zinit ice wait lucid pick"zsh-autosuggestions.plugin.zsh" atload'_zsh_autosuggest_start' && zinit light _local/zsh-autosuggestions #自动建议插件 It suggests commands as you type based on history and completions.'
         TMOE_IMPORTANT_TIPS=$(
             cat <<-EOF
     ${YELLOW}https://github.com/zsh-users/zsh-autosuggestions${RESET}
@@ -2008,8 +2008,10 @@ git_clone_fast_syntax_highlighting() {
 }
 ################
 git_clone_zsh_autosuggestions() {
-    ZSH_PLUGIN_GIT_URL_01='https://github.com/zsh-users/zsh-autosuggestions.git'
-    git_clone_zsh_plugin
+    if [ ! -e "${ZSH_PLUGIN_GIT_FOLDER}/zsh-autosuggestions.plugin.zsh" ]; then
+        rm -rfv "${ZSH_PLUGIN_GIT_FOLDER}" 2>/dev/null
+        ln -sv "${OMZ_DIR}/plugins/zsh-autosuggestions" "${ZSH_PLUGIN_GIT_FOLDER}"
+    fi
 }
 ##########
 tmoe_zsh_plugin_install_function() {

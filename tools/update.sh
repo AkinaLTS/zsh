@@ -143,7 +143,6 @@ git_pull_zinit() {
     cd ${ZINIT_DIR}/bin
     tmoe_git_pull_origin_default
     git_pull_fast_syntax_highlighting
-    git_pull_zsh_autosuggestions
 }
 #############
 tmoe_git_pull_origin_default() {
@@ -164,13 +163,6 @@ tmoe_git_pull_origin_default() {
 git_pull_fast_syntax_highlighting() {
     if [ -e "${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}/.git" ]; then
         cd ${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}
-        tmoe_git_pull_origin_default
-    fi
-}
-###########
-git_pull_zsh_autosuggestions() {
-    if [ -e "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}/.git" ]; then
-        cd ${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}
         tmoe_git_pull_origin_default
     fi
 }
