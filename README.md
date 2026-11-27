@@ -1,6 +1,6 @@
 # Tmoe-zsh 介绍
 
-Forked by AkinaAcct, Origin repo https://gitee.com/mo2/zsh
+Forked by AkinaLTS, Origin repo https://gitee.com/mo2/zsh
 
 ```bash
 . <(curl -L l.tmoe.me/ee/zsh)

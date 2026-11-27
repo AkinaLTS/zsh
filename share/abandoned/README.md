@@ -52,12 +52,12 @@ TMOE_ZSH_DIR=${HOME}/.config/tmoe-zsh
 ZINIT_DIR=${HOME}/.zinit
 
 mkdir -pv ${TMOE_ZSH_DIR} ${ZINIT_DIR}/plugins ${ZINIT_DIR}/themes/_local
-git clone --depth=1 git://github.com/2moe/tmoe-zsh ${TMOE_ZSH_DIR}/git
-git clone --depth=1 git://github.com/zdharma/zinit ${ZINIT_DIR}/bin
-git clone --depth=1 git://github.com/ohmyzsh/ohmyzsh ${ZINIT_DIR}/omz
-git clone --depth=1 git://github.com/Aloxaf/fzf-tab "${ZINIT_DIR}/plugins/_local---fzf-tab"
-git clone --depth=1 git://github.com/zdharma/fast-syntax-highlighting "${ZINIT_DIR}/plugins/_local---fast-syntax-highlighting"
-git clone --depth=1 git://github.com/zsh-users/zsh-autosuggestions "${ZINIT_DIR}/plugins/_local---zsh-autosuggestions"
+git clone --depth=1 https://github.com/AkinaLTS/zsh ${TMOE_ZSH_DIR}/git
+git clone --depth=1 https://github.com/zdharma-continuum/zinit ${ZINIT_DIR}/bin
+git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh ${ZINIT_DIR}/omz
+git clone --depth=1 https://github.com/Aloxaf/fzf-tab "${ZINIT_DIR}/plugins/_local---fzf-tab"
+git clone --depth=1 https://github.com/zdharma-continuum/fast-syntax-highlighting "${ZINIT_DIR}/plugins/_local---fast-syntax-highlighting"
+git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZINIT_DIR}/plugins/_local---zsh-autosuggestions"
 
 cd ${ZINIT_DIR}/omz/plugins
 for i in $(ls ${PWD}); do

@@ -124,12 +124,12 @@ git_clone_zinit_and_omz() {
     cd ${ZINIT_DIR}
     if [ ! -e "bin/.git" ]; then
         rm -rv bin 2>/dev/null
-        git clone --depth=1 https://gitee.com/ak2/zinit.git ${ZINIT_DIR}/bin || git clone --depth=1 git://github.com/2cd/zinit ${ZINIT_DIR}/bin
+        git clone --depth=1 https://github.com/zdharma-continuum/zinit.git ${ZINIT_DIR}/bin
     fi
 
     if [ ! -e "omz/.git" ]; then
         rm -rv omz 2>/dev/null
-        git clone https://gitee.com/mirrors/oh-my-zsh.git "${OMZ_DIR}" --depth 1 || git clone --depth=1 git://github.com/ohmyzsh/ohmyzsh "${OMZ_DIR}"
+        git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "${OMZ_DIR}"
     fi
     neko_01
     zinit_ascii
@@ -142,12 +142,7 @@ git_clone_zinit_and_omz() {
         cp ${TMOE_ZSH_GIT_DIR}/config/zshrc.zsh "${HOME}/.zshrc"
     fi
 
-    if [ $(command -v eza) ]; then
-        EXA_VERSION=$(eza --version 2>&1 | head -n 1 | awk '{print $NF}')
-        case ${EXA_VERSION} in
-        v0.[0-8].*) sed -i 's@ --icons@@g' "${HOME}/.zshrc" ;;
-        esac
-    else
+    if [ ! $(command -v eza) ]; then
         sed -i 's@ --icons@@g' "${HOME}/.zshrc"
     fi
 
@@ -259,8 +254,6 @@ add_zinit_plugin_fzf_tab() {
     sed -i 's@^.*/fzf-tab@#&@g' "${HOME}/.zshrc"
     cat >>${HOME}/.zshrc <<-'EOF'
 [[ $(command -v fzf) ]] && zinit ice lucid pick"fzf-tab.zsh" && zinit light _local/fzf-tab  #aloxaf:fzf-tab 是一个能够极大提升 zsh 补全体验的插件。它通过 hook zsh 补全系统的底层函数 compadd 来截获补全列表，从而实现了在补全命令行参数、变量、目录栈和文件时都能使用 fzf 进行选择的功能。Replace zsh's default completion selection menu with fzf! 
-export EDITOR=nvim # 制定默认编辑器为 nvim
-export GPG_TTY=$(tty) # 修复 gnupg 找不到 tty 的问题
 EOF
 }
 ############
@@ -285,7 +278,7 @@ git_clone_fzf_tab() {
             #  sed -i '/aloxaf:fzf-tab/d' ${HOME}/.zshrc
             ;;
         new)
-            git clone --depth=1 https://gitee.com/mo2/fzf-tab.git "${FZF_TAB_PLUGIN_DIR}" || git clone --depth=1 git://github.com/Aloxaf/fzf-tab.git "${FZF_TAB_PLUGIN_DIR}"
+            git clone --depth=1 https://github.com/Aloxaf/fzf-tab.git "${FZF_TAB_PLUGIN_DIR}"
             chmod 755 -R "${FZF_TAB_PLUGIN_DIR}"
             if ! grep -Eq '^[^#]*zinit.*/fzf-tab' "${HOME}/.zshrc"; then
                 add_zinit_plugin_fzf_tab
@@ -360,12 +353,12 @@ git_clone_fast_syntax_highlighting() {
     if [ ! -d "${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}/.git" ]; then
         cat <<-ENDOFPLUGININFO
     正在克隆zsh语法高亮插件${BOLD}${BLUE}fast-syntax-highlighting${RESET}${RESET}...
-    ${YELLOW}github.com/zdharma/fast-syntax-highlighting${RESET}
+    ${YELLOW}github.com/zdharma-continuum/fast-syntax-highlighting${RESET}
     ${BLUE}fast_syntax_highlighting语法高亮插件，速度比zsh-syntax-highlighting更快。${RESET}
     ${GREEN}(Short name F-Sy-H). Syntax-highlighting for Zshell – fine granularity, number of features, 40 work hours themes${RESET}
 ENDOFPLUGININFO
         #sed -i '/fast-syntax-highlighting.zsh/d' "${HOME}/.zshrc"
-        git clone --depth=1 https://gitee.com/ak2/fast-syntax-highlighting.git ${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR} || git clone --depth=1 git://github.com/2cd/fsyh ${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}
+        git clone --depth=1 https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}
         chmod 755 -R "${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}"
     fi
 
@@ -390,7 +383,7 @@ git_clone_zsh_autosuggestions() {
     ${GREEN}It suggests commands as you type based on history and completions.${RESET}
 ENDOFPLUGININFO
         #sed -i '/zsh-autosuggestions.zsh/d' "${HOME}/.zshrc"
-        git clone --depth=1 https://gitee.com/ak2/zsh-autosuggestions ${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR} || git clone --depth=1 git://github.com/zsh-users/zsh-autosuggestions ${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}
+        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}
         chmod 755 -R "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}"
     fi
     if ! grep -Eq '^[^#]*zinit.*/zsh-autosuggestions' "${HOME}/.zshrc"; then
@@ -465,7 +458,7 @@ tips_of_tmoe_zsh_01() {
     ${BOLD}${YELLOW}补全插件${RESET}${RESET}:输入已知命令或函数的部分字符后，按下${BOLD}${BLUE}TAB键⇄${RESET}${RESET}
     用法示例：输入${GREEN}zsht${RESET}后，按下${BLUE}⇄${RESET}补全为${GREEN}zshtheme${RESET},按下空格，再按下${BLUE}TAB键${RESET}
     ${BOLD}${YELLOW}Description${RESET}${RESET}:You can press ${BOLD}${BLUE}TAB KEY ⇄ ${RESET}${RESET} to use auto completion plugin.
-    For ezample,type ${GREEN}git${RESET},and press space key, and press ${BLUE}⇄${RESET}
+    For example,type ${GREEN}git${RESET},and press space key, and press ${BLUE}⇄${RESET}
     ------------
     ${BOLD}${YELLOW}插件名称PLUGIN NAME${RESET}${RESET}:${BOLD}${BLUE}zsh-autosuggestions${RESET}${RESET}
     ${BOLD}${YELLOW}历史记录插件用法${RESET}${RESET}:输入曾输过的命令，按方向键上${BOLD}${YELLOW}↑${RESET}或右${BOLD}${YELLOW}→${RESET}进行补全。

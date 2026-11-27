@@ -134,7 +134,7 @@ zinit_csearch() {
     ${BOLD}${YELLOW}Description${RESET}${RESET}: ${BLUE}Search for available completions from any plugin${RESET}.
     ${BOLD}${YELLOW}描述${RESET}${RESET}: ${BLUE}对插件目录进行搜索，列举所有可用补全，并显示其安装状态。${RESET}
     You can type ${GREEN}zi cenable${RESET} ${BLUE}\$PLUGIN_COMMAND${RESET} to enable completion,type ${GREEN}zi cdisnable${RESET} ${BLUE}\$PLUGIN_COMMAND${RESET} to disable it.
-    For ezample,you can type ${GREEN}zi cenable${RESET} ${BLUE}docker${RESET} to enable docker's completion.
+    For example,you can type ${GREEN}zi cenable${RESET} ${BLUE}docker${RESET} to enable docker's completion.
     示例：输${GREEN}zi cenable${RESET} ${BLUE}adb${RESET}启用adb的补全。
 EOF
 }
@@ -817,7 +817,7 @@ tmoe_zsh_plugin_menu_03() {
         ;;
     04)
         TMOE_ZSH_GREP_NAME='history'
-        TMOE_ZSH_COMMENT_CONTENT='Provides a couple of convenient aliases for using the `history` command to ezamine your command line history.'
+        TMOE_ZSH_COMMENT_CONTENT='Provides a couple of convenient aliases for using the `history` command to examine your command line history.'
         ;;
     05)
         TMOE_ZSH_GREP_NAME='history-substring-search'
@@ -1971,20 +1971,22 @@ pip_install_autoenv() {
     fi
 }
 #############
-git_pull_origin_master() {
-    git reset --hard origin/master
-    git pull --rebase --stat --depth=1 origin master --allow-unrelated-histories || git rebase --skip
+git_pull_origin_default() {
+    local branch
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "master")
+    git reset --hard "origin/${branch}" 2>/dev/null || git reset --hard
+    git pull --rebase --stat --depth=1 origin "${branch}" --allow-unrelated-histories || git rebase --skip
 }
 ###########
 git_clone_zsh_plugin() {
     if [ ! -d "${ZSH_PLUGIN_GIT_FOLDER}/.git" ]; then
         rm -rfv ${ZSH_PLUGIN_GIT_FOLDER} 2>/dev/null
-        git clone --depth=1 ${ZSH_PLUGIN_GIT_URL_01} "${ZSH_PLUGIN_GIT_FOLDER}" || git clone --depth=1 ${ZSH_PLUGIN_GIT_URL_02} "${ZSH_PLUGIN_GIT_FOLDER}"
+        git clone --depth=1 ${ZSH_PLUGIN_GIT_URL_01} "${ZSH_PLUGIN_GIT_FOLDER}"
         chmod 755 -R "${ZSH_PLUGIN_GIT_FOLDER}"
     else
         cd "${ZSH_PLUGIN_GIT_FOLDER}"
-        git_pull_origin_master
-        printf "%s\n" "${BLUE}${ZSH_PLUGIN_GIT_URL_02}${RESET}"
+        git_pull_origin_default
+        printf "%s\n" "${BLUE}${ZSH_PLUGIN_GIT_URL_01}${RESET}"
     fi
 }
 #############
@@ -1996,20 +1998,17 @@ git_clone_fzf_tab() {
     if [ ! $(command -v fzf) ]; then
         printf "%s\n" "检测到您尚未安装fzf,请手动使用包管理安装。"
     fi
-    ZSH_PLUGIN_GIT_URL_01='https://gitee.com/mo2/fzf-tab.git'
-    ZSH_PLUGIN_GIT_URL_02='git://github.com/Aloxaf/fzf-tab.git'
+    ZSH_PLUGIN_GIT_URL_01='https://github.com/Aloxaf/fzf-tab.git'
     git_clone_zsh_plugin
 }
 ###########
 git_clone_fast_syntax_highlighting() {
-    ZSH_PLUGIN_GIT_URL_01='https://gitee.com/ak2/fast-syntax-highlighting.git'
-    ZSH_PLUGIN_GIT_URL_02='git://gitee.com/ak2/fast-syntax-highlighting'
+    ZSH_PLUGIN_GIT_URL_01='https://github.com/zdharma-continuum/fast-syntax-highlighting.git'
     git_clone_zsh_plugin
 }
 ################
 git_clone_zsh_autosuggestions() {
-    ZSH_PLUGIN_GIT_URL_01='https://gitee.com/ak2/zsh-autosuggestions'
-    ZSH_PLUGIN_GIT_URL_02='git://github.com/zsh-users/zsh-autosuggestions'
+    ZSH_PLUGIN_GIT_URL_01='https://github.com/zsh-users/zsh-autosuggestions.git'
     git_clone_zsh_plugin
 }
 ##########

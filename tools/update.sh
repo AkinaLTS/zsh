@@ -135,20 +135,22 @@ git_pull_powerlevel_10k() {
     POWER_LEVEL_DIR="${ZINIT_THEME_DIR}/powerlevel10k"
     if [ -e "${POWER_LEVEL_DIR}/.git" ]; then
         cd "${POWER_LEVEL_DIR}"
-        tmoe_git_pull_origin_main
+        tmoe_git_pull_origin_default
     fi
 }
 ################
 git_pull_zinit() {
     cd ${ZINIT_DIR}/bin
-    tmoe_git_pull_origin_main
+    tmoe_git_pull_origin_default
     git_pull_fast_syntax_highlighting
     git_pull_zsh_autosuggestions
 }
 #############
-tmoe_git_pull_origin_main() {
-    git reset --hard origin/main
-    git pull --rebase --stat --depth=1 origin main --allow-unrelated-histories || git rebase --skip
+tmoe_git_pull_origin_default() {
+    local branch
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "master")
+    git reset --hard "origin/${branch}" 2>/dev/null || git reset --hard
+    git pull --rebase --stat --depth=1 origin "${branch}" --allow-unrelated-histories || git rebase --skip
     case "${?}" in
     0) ;;
     *)
@@ -162,21 +164,20 @@ tmoe_git_pull_origin_main() {
 git_pull_fast_syntax_highlighting() {
     if [ -e "${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}/.git" ]; then
         cd ${FAST_SYNTAX_HIGH_LIGHTING_PLUGIN_DIR}
-        tmoe_git_pull_origin_main
+        tmoe_git_pull_origin_default
     fi
 }
 ###########
 git_pull_zsh_autosuggestions() {
     if [ -e "${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}/.git" ]; then
         cd ${ZSH_AUTO_SUGGESTIONS_PLUGIN_DIR}
-        tmoe_git_pull_origin_main
+        tmoe_git_pull_origin_default
     fi
 }
 #############
 git_pull_oh_my_zsh() {
     cd ${OMZ_DIR}
-    git reset --hard origin/main
-    git pull --rebase --stat --depth=1 origin main --allow-unrelated-histories || git rebase --skip
+    tmoe_git_pull_origin_default
     #printf "%s\n" "若oh-my-zsh更新失败，则请手动输${BLUE}zsh ${OMZ_DIR}/tools/upgrade.sh${RESET}" && zsh "${OMZ_DIR}/tools/upgrade.sh"
 }
 ###########

@@ -142,10 +142,8 @@ tmoe_zsh_theme_env() {
   ZSHRC_FILE="${HOME}/.zshrc"
   CURRENT_DIR=$(pwd)
   #DIR=$(cd $(dirname $0);pwd;)
-  P10K_URL_01="https://gitee.com/romkatv/powerlevel10k.git"
-  P10K_URL_02="git://github.com/romkatv/powerlevel10k"
-  P9K_URL_01='https://gitee.com/ak2/powerlevel9k.git'
-  P9K_URL_02="git://github.com/Powerlevel9k/powerlevel9k"
+  P10K_URL_01="https://github.com/romkatv/powerlevel10k.git"
+  P9K_URL_01="https://github.com/Powerlevel9k/powerlevel9k.git"
   if [ $(command -v gawk) ]; then
     ZINIT_LINE=$(grep -E -n '^[^#]*source.*bin/zinit.zsh' ${ZSHRC_FILE} | gawk -F ':' '{print $1}' | head -n 1)
   else
@@ -240,7 +238,7 @@ configure_p9k() {
   check_readme_file
   if [ ! -e "${CHOSEN_THEME_DIR}/.git" ]; then
     rm_zsh_git_theme_dir
-    git clone --depth=1 ${P9K_URL_01} "${CHOSEN_THEME_DIR}" || git clone --depth=1 ${P9K_URL_02} "${CHOSEN_THEME_DIR}"
+    git clone --depth=1 ${P9K_URL_01} "${CHOSEN_THEME_DIR}"
   fi
   configure_new_zsh_theme_01
 }
@@ -253,7 +251,7 @@ git_pull_zsh_theme() {
 }
 ########
 configure_p10k() {
-  printf "%s\n" "${YELLOW}${P10K_URL_02}${RESET}"
+  printf "%s\n" "${YELLOW}${P10K_URL_01}${RESET}"
   printf "%s\n" "${BLUE}${CHOSEN_THEME_DIR}${RESET}"
   printf "%s\n" "You can type ${GREEN}p10k configure${RESET} to configure ${BLUE}powerlevel 10k${RESET}."
   printf "%s\n" "输${GREEN}p10k configure${RESET}配置powerlevel 10k${RESET}"
@@ -261,7 +259,7 @@ configure_p10k() {
     cat_zsh_theme_readme_md
     rm_zsh_git_theme_dir
     printf "%s\n" "若无法弹出powerlevel 10k配置面板，则请拉宽屏幕显示大小，然后输${GREEN}p10k configure${RESET}"
-    git clone ${P10K_URL_01} "${CHOSEN_THEME_DIR}" --depth=1 || git clone ${P10K_URL_02} "${CHOSEN_THEME_DIR}" --depth=1
+    git clone ${P10K_URL_01} "${CHOSEN_THEME_DIR}" --depth=1
     configure_new_zsh_theme_01
   else
     git_pull_zsh_theme
